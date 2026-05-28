@@ -1,0 +1,6 @@
+{
+  "name": "BarberWallah",
+  "description": "A professional real-time queue management system for barbers with loyalty rewards, earnings tracking, and automated customer notifications.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

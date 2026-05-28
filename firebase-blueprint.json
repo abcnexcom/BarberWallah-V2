@@ -1,0 +1,177 @@
+{
+  "entities": {
+    "Shop": {
+      "title": "Shop",
+      "description": "A barber shop registered in the system",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "ownerName": { "type": "string" },
+        "phone": { "type": "string" },
+        "city": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "status": { "type": "string", "enum": ["pending", "active", "suspended"] },
+        "plan": { "type": "string", "enum": ["basic", "intermediate", "advanced"] },
+        "paidUntil": { "type": "string", "format": "date-time" },
+        "setupDate": { "type": "string", "format": "date-time" },
+        "queueOpen": { "type": "boolean" },
+        "pin": { "type": "string" },
+        "password": { "type": "string" },
+        "adminNotes": { "type": "string" },
+        "wantsPartnership": { "type": "boolean" },
+        "referralCodeUsed": { "type": "string" },
+        "partnershipPercentage": { "type": "number" }
+      },
+      "required": ["id", "name", "ownerName", "phone", "city", "status", "plan", "paidUntil", "setupDate", "queueOpen", "pin"]
+    },
+    "Service": {
+      "title": "Service",
+      "description": "A service offered by a shop",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "duration": { "type": "number" },
+        "active": { "type": "boolean" },
+        "sortOrder": { "type": "number" }
+      },
+      "required": ["id", "shopId", "name", "price", "duration", "active", "sortOrder"]
+    },
+    "QueueEntry": {
+      "title": "QueueEntry",
+      "description": "A customer waiting in the queue",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "phone": { "type": "string" },
+        "serviceId": { "type": "string" },
+        "serviceName": { "type": "string" },
+        "tokenNo": { "type": "number" },
+        "status": { "type": "string", "enum": ["waiting", "called", "in_service", "done", "no_show", "cancelled"] },
+        "joinedAt": { "type": "string", "format": "date-time" },
+        "calledAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "estimatedWait": { "type": "number" },
+        "isCashOnly": { "type": "boolean" }
+      },
+      "required": ["id", "shopId", "customerName", "phone", "serviceId", "serviceName", "tokenNo", "status", "joinedAt", "estimatedWait", "isCashOnly"]
+    },
+    "CustomerHistory": {
+      "title": "CustomerHistory",
+      "description": "Loyalty history for a customer at a specific shop",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "phone": { "type": "string" },
+        "totalVisits": { "type": "number" },
+        "streakCount": { "type": "number" },
+        "lastVisitDate": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "shopId", "customerName", "phone", "totalVisits", "streakCount", "updatedAt"]
+    },
+    "ShopConfig": {
+      "title": "ShopConfig",
+      "description": "Configuration for a shop",
+      "type": "object",
+      "properties": {
+        "shopId": { "type": "string" },
+        "loyaltyThreshold": { "type": "number" },
+        "loyaltyDiscountPct": { "type": "number" },
+        "streakWindowDays": { "type": "number" },
+        "avgServiceMin": { "type": "number" },
+        "exotelSid": { "type": "string" },
+        "exotelToken": { "type": "string" },
+        "exotelCallerId": { "type": "string" },
+        "audioUrl": { "type": "string" },
+        "enableWhatsApp": { "type": "boolean" },
+        "ownerWhatsApp": { "type": "string" },
+        "whatsappApiKey": { "type": "string" }
+      },
+      "required": ["shopId", "loyaltyThreshold", "loyaltyDiscountPct", "streakWindowDays", "avgServiceMin"]
+    },
+    "EarningRecord": {
+      "title": "EarningRecord",
+      "description": "Daily earnings for a shop",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "date": { "type": "string" },
+        "totalCustomers": { "type": "number" },
+        "totalRevenue": { "type": "number" },
+        "discountsGiven": { "type": "number" },
+        "netRevenue": { "type": "number" }
+      },
+      "required": ["id", "shopId", "date", "totalCustomers", "totalRevenue", "discountsGiven", "netRevenue"]
+    },
+    "ReferralConfig": {
+      "title": "ReferralConfig",
+      "description": "Global config and codes for the referral system",
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "validCodes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "codePercentages": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        }
+      },
+      "required": ["enabled", "validCodes"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "An authenticated administrator or dynamic session",
+      "type": "object",
+      "properties": {
+        "pin": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["pin"]
+    }
+  },
+  "firestore": {
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Dynamic admin registration and authorization entries"
+    },
+    "/referralSettings/{id}": {
+      "schema": "ReferralConfig",
+      "description": "Global settings and valid codes for the referral system"
+    },
+    "/shops/{shopId}": {
+      "schema": "Shop",
+      "description": "Shop details"
+    },
+    "/shops/{shopId}/services/{serviceId}": {
+      "schema": "Service",
+      "description": "Services offered by the shop"
+    },
+    "/shops/{shopId}/queue/{entryId}": {
+      "schema": "QueueEntry",
+      "description": "Current queue entries"
+    },
+    "/shops/{shopId}/customers/{customerId}": {
+      "schema": "CustomerHistory",
+      "description": "Customer loyalty history"
+    },
+    "/shops/{shopId}/config/main": {
+      "schema": "ShopConfig",
+      "description": "Shop configuration"
+    },
+    "/shops/{shopId}/earnings/{earningId}": {
+      "schema": "EarningRecord",
+      "description": "Daily earnings records"
+    }
+  }
+}

@@ -1,0 +1,104 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: shops
+    // Fields: id, name, ownerName, phone, city, status, plan, paidUntil, setupDate, queueOpen, pin, password
+    //
+    // Collection: shops/{shopId}/services
+    // Fields: id, shopId, name, price, duration, active, sortOrder
+    //
+    // Collection: shops/{shopId}/queue
+    // Fields: id, shopId, customerName, phone, serviceId, serviceName, tokenNo, status, joinedAt, estimatedWait, isCashOnly
+    //
+    // Collection: shops/{shopId}/customers
+    // Fields: id, shopId, customerName, phone, totalVisits, streakCount, lastVisitDate, updatedAt
+    //
+    // Collection: shops/{shopId}/config
+    // Fields: shopId, loyaltyThreshold, loyaltyDiscountPct, streakWindowDays, avgServiceMin, maxWaitingCapacity
+    //
+    // Collection: shops/{shopId}/earnings
+    // Fields: id, shopId, date, totalCustomers, totalRevenue, discountsGiven, netRevenue
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+             ((request.auth.token.email == "abcnex.com@gmail.com" && request.auth.token.email_verified == true) || 
+              request.auth.uid in ["Q6Bw8rKstbejZXxIQf1NsOwQXZA3", "nthr5f8SGTVR2ibxcSE91erIcIi1", "yoGCVp4QcYRvMBq1GzmVhzK4Qn73"] ||
+              exists(/databases/$(database)/documents/admins/$(request.auth.uid)));
+    }
+
+    function isShopOwner(shopId) {
+      return isAuthenticated(); 
+    }
+
+    function isValidShop(data) {
+      return data.keys().hasAll(['id', 'name', 'ownerName', 'phone', 'city', 'status', 'plan', 'paidUntil', 'setupDate', 'queueOpen', 'pin']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.ownerName is string && data.ownerName.size() > 0 && data.ownerName.size() < 100 &&
+             data.phone is string && data.phone.matches('^[0-9]{10}$') &&
+             data.status in ['pending', 'active', 'suspended'] &&
+             data.plan in ['basic', 'intermediate', 'advanced'] &&
+             (!data.keys().contains('wantsPartnership') || data.wantsPartnership is bool) &&
+             (!data.keys().contains('referralCodeUsed') || data.referralCodeUsed is string) &&
+             (!data.keys().contains('partnershipPercentage') || data.partnershipPercentage is number);
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /admins/{adminId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && (request.resource.data.pin == "123456" || request.resource.data.pin == "1234" || request.resource.data.pin == "google_auth");
+    }
+
+    match /referralSettings/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /shops/{shopId} {
+      allow read: if true; // Publicly readable so customers can see shop info
+      allow create: if isValidShop(request.resource.data);
+      allow update: if isAdmin() || (isShopOwner(shopId) && request.resource.data.status == resource.data.status);
+      allow delete: if isAdmin();
+
+      match /services/{serviceId} {
+        allow read: if true;
+        allow write: if isShopOwner(shopId);
+      }
+
+      match /queue/{entryId} {
+        allow read: if true;
+        allow create: if true; // Customers can join queue
+        allow update: if isShopOwner(shopId);
+        allow delete: if isAdmin();
+      }
+
+      match /customers/{customerId} {
+        allow read: if isShopOwner(shopId);
+        allow write: if isShopOwner(shopId);
+      }
+
+      match /config/{configId} {
+        allow read: if true;
+        allow create: if true; // Allow initial config creation during registration
+        allow update: if isShopOwner(shopId);
+      }
+
+      match /earnings/{earningId} {
+        allow read: if isShopOwner(shopId);
+        allow write: if isShopOwner(shopId);
+      }
+    }
+  }
+}

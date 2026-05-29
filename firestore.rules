@@ -74,7 +74,9 @@ service cloud.firestore {
 
       match /services/{serviceId} {
         allow read: if true;
-        allow write: if isShopOwner(shopId);
+        allow create: if true; // Allow initial services creation during registration
+        allow update: if isShopOwner(shopId);
+        allow delete: if isShopOwner(shopId);
       }
 
       match /queue/{entryId} {

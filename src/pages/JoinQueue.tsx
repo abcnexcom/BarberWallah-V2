@@ -74,13 +74,17 @@ export default function JoinQueue() {
 
     setJoining(true);
     try {
-      const service = services.find(s => s.id === formData.serviceId);
+      const selectedServiceIds = formData.serviceId.split(',').filter(Boolean);
+      const selectedServices = services.filter(s => selectedServiceIds.includes(s.id));
+      const compositeName = selectedServices.map(s => s.name).join(' + ');
+      const totalDuration = selectedServices.reduce((sum, s) => sum + s.duration, 0) || config?.avgServiceMin || 20;
+
       const entryId = await queueService.joinQueue(shopId, {
         customerName: formData.name,
         phone: formData.phone,
         serviceId: formData.serviceId,
-        serviceName: service?.name || '',
-        estimatedWait: waitingCount * (service?.duration || config?.avgServiceMin || 20)
+        serviceName: compositeName,
+        estimatedWait: waitingCount * totalDuration
       });
       
       if (entryId) {
@@ -91,7 +95,7 @@ export default function JoinQueue() {
             customerName: formData.name,
             phone: formData.phone,
             tokenNo: (waitingCount + 1), // Approximate
-            estimatedWait: waitingCount * (service?.duration || config.avgServiceMin || 20)
+            estimatedWait: waitingCount * totalDuration
           } as any;
           
           notificationService.notifyOwnerOfJoiner(shop?.name || 'The Salon', entry, config);
@@ -193,11 +197,11 @@ export default function JoinQueue() {
         </div>
       )}
 
-      <main className="max-w-md mx-auto p-6 -mt-8 relative z-20">
+      <main className="max-w-md mx-auto px-4 py-6 sm:px-6 sm:py-8 -mt-8 relative z-20">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white border border-[#e8e4dc] rounded-[2rem] p-8 shadow-xl"
+          className="bg-white border border-[#e8e4dc] rounded-[2rem] p-5 sm:p-8 shadow-xl"
         >
           <h2 className="font-['Playfair_Display'] text-2xl font-bold mb-6">{t('common.joinQueue')}</h2>
 
@@ -237,43 +241,52 @@ export default function JoinQueue() {
             <div className="space-y-3">
               <label className="text-[10px] uppercase tracking-widest text-gray-400 font-black">{t('common.service')}</label>
               <div className="space-y-2">
-                {services.map(svc => (
-                  <button
-                    key={svc.id}
-                    type="button"
-                    onClick={() => setFormData({...formData, serviceId: svc.id})}
-                    className={cn(
-                      "w-full p-4 rounded-2xl border flex items-center justify-between transition-all group",
-                      formData.serviceId === svc.id 
-                        ? "bg-[#1a1a2e] border-[#1a1a2e] text-white shadow-lg shadow-[#1a1a2e]/20" 
-                        : "bg-[#f7f5f0] border-[#e8e4dc] text-gray-600 hover:border-gray-400"
-                    )}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className={cn(
-                        "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors",
-                        formData.serviceId === svc.id ? "border-white" : "border-gray-300"
-                      )}>
-                        {formData.serviceId === svc.id && <div className="w-2 h-2 rounded-full bg-white"></div>}
+                {services.map(svc => {
+                  const isSelected = formData.serviceId.split(',').filter(Boolean).includes(svc.id);
+                  return (
+                    <button
+                      key={svc.id}
+                      type="button"
+                      onClick={() => {
+                        const ids = formData.serviceId ? formData.serviceId.split(',').filter(Boolean) : [];
+                        const nextIds = ids.includes(svc.id)
+                          ? ids.filter(id => id !== svc.id)
+                          : [...ids, svc.id];
+                        setFormData({...formData, serviceId: nextIds.join(',')});
+                      }}
+                      className={cn(
+                        "w-full p-4 rounded-2xl border flex items-center justify-between transition-all group cursor-pointer",
+                        isSelected 
+                          ? "bg-[#1a1a2e] border-[#1a1a2e] text-white shadow-lg shadow-[#1a1a2e]/20" 
+                          : "bg-[#f7f5f0] border-[#e8e4dc] text-gray-600 hover:border-gray-400"
+                      )}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={cn(
+                          "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors",
+                          isSelected ? "border-white" : "border-gray-300"
+                        )}>
+                          {isSelected && <div className="w-2 h-2 rounded-full bg-white"></div>}
+                        </div>
+                        <div className="flex flex-col items-start">
+                          <span className="font-bold">{svc.name}</span>
+                          <span className="text-[10px] opacity-60">{shop?.currency}{svc.price}</span>
+                        </div>
                       </div>
-                      <div className="flex flex-col items-start">
-                        <span className="font-bold">{svc.name}</span>
-                        <span className="text-[10px] opacity-60">{shop?.currency}{svc.price}</span>
-                      </div>
-                    </div>
-                    <span className={cn(
-                      "text-xs font-bold uppercase tracking-widest",
-                      formData.serviceId === svc.id ? "text-white/50" : "text-gray-400"
-                    )}>{svc.duration} min</span>
-                  </button>
-                ))}
+                      <span className={cn(
+                        "text-xs font-bold uppercase tracking-widest",
+                        isSelected ? "text-white/50" : "text-gray-400"
+                      )}>{svc.duration} min</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             {formData.serviceId && (
               <div className="p-4 bg-green-50 border border-green-100 rounded-2xl text-green-700 text-sm flex items-center gap-3">
                 <Clock size={18} />
-                <span>{t('common.estWait')}: <strong>{waitingCount * (services.find(s => s.id === formData.serviceId)?.duration || 20)} {t('common.min')}</strong></span>
+                <span>{t('common.estWait')}: <strong>{waitingCount * (services.filter(s => formData.serviceId.split(',').filter(Boolean).includes(s.id)).reduce((sum, s) => sum + s.duration, 0) || config?.avgServiceMin || 20)} {t('common.min')}</strong></span>
               </div>
             )}
 

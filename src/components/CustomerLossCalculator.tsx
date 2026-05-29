@@ -67,14 +67,14 @@ export default function CustomerLossCalculator({ shop, onUpdate }: CustomerLossC
 
   return (
     <div className="space-y-8">
-      <div className="bg-[#13162a] border border-white/5 rounded-3xl p-8">
+      <div className="bg-[#13162a] border border-white/5 rounded-3xl p-5 sm:p-8">
         <div className="mb-8">
           <div className="text-[10px] uppercase tracking-widest text-[#c9a84c] font-semibold mb-2">{t('loss.step1')}</div>
-          <h3 className="text-2xl font-['Playfair_Display'] font-bold text-white mb-2">{t('loss.question')}</h3>
+          <h3 className="text-xl sm:text-2xl font-['Playfair_Display'] font-bold text-white mb-2">{t('loss.question')}</h3>
           <p className="text-white/40 text-sm">{t('loss.desc')}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
           <div className="space-y-6">
             <div className="space-y-4">
               <label className="text-[10px] uppercase tracking-widest text-[#c9a84c] font-semibold flex justify-between">
@@ -113,21 +113,21 @@ export default function CustomerLossCalculator({ shop, onUpdate }: CustomerLossC
           </div>
 
           <div className="space-y-6">
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-6">
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 space-y-6">
               <h3 className="text-sm font-semibold text-[#c9a84c] uppercase tracking-widest">{t('loss.estRevenueLoss')}</h3>
               
               <div className="space-y-4">
-                <div className="flex justify-between items-end">
-                  <span className="text-white/40 text-sm">{t('loss.weekly')}</span>
-                  <span className="text-2xl font-bold text-red-400">{formatCurrency(weeklyRevenueLoss)}</span>
+                <div className="flex justify-between items-center sm:items-end gap-2">
+                  <span className="text-white/40 text-xs sm:text-sm shrink-0">{t('loss.weekly')}</span>
+                  <span className="text-xl sm:text-2xl font-bold text-red-400 break-all text-right font-mono">{formatCurrency(weeklyRevenueLoss)}</span>
                 </div>
-                <div className="flex justify-between items-end">
-                  <span className="text-white/40 text-sm">{t('loss.monthly')}</span>
-                  <span className="text-3xl font-bold text-red-500">{formatCurrency(monthlyRevenueLoss)}</span>
+                <div className="flex justify-between items-center sm:items-end gap-2">
+                  <span className="text-white/40 text-xs sm:text-sm shrink-0">{t('loss.monthly')}</span>
+                  <span className="text-2xl sm:text-3xl font-bold text-red-500 break-all text-right font-mono">{formatCurrency(monthlyRevenueLoss)}</span>
                 </div>
-                <div className="flex justify-between items-end pt-4 border-t border-white/10">
-                  <span className="text-white/40 text-sm">{t('loss.yearly')}</span>
-                  <span className="text-4xl font-black text-red-600">{formatCurrency(yearlyRevenueLoss)}</span>
+                <div className="flex justify-between items-center sm:items-end gap-2 pt-4 border-t border-white/10">
+                  <span className="text-white/40 text-xs sm:text-sm shrink-0">{t('loss.yearly')}</span>
+                  <span className="text-3xl sm:text-4xl font-black text-red-600 break-all text-right font-mono">{formatCurrency(yearlyRevenueLoss)}</span>
                 </div>
               </div>
 
@@ -136,9 +136,9 @@ export default function CustomerLossCalculator({ shop, onUpdate }: CustomerLossC
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setShowGame(true)}
-                  className="w-full py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8c96a] text-[#0d0f1a] font-bold rounded-xl flex items-center justify-center gap-2 mt-8"
+                  className="w-full py-3.5 px-4 bg-gradient-to-r from-[#c9a84c] to-[#e8c96a] text-[#0d0f1a] text-xs sm:text-sm font-black uppercase tracking-wider rounded-xl flex items-center justify-center gap-1.5 mt-6 sm:mt-8 hover:brightness-110 transition-all cursor-pointer shadow-md"
                 >
-                  <Gift size={20} /> {t('loss.recover')}
+                  <Gift size={16} className="shrink-0" /> {t('loss.recover')}
                 </motion.button>
               )}
             </div>
@@ -167,39 +167,39 @@ export default function CustomerLossCalculator({ shop, onUpdate }: CustomerLossC
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-[#0d0f1a]/95 backdrop-blur-xl flex items-center justify-center p-6"
+            className="fixed inset-0 z-[100] bg-[#0d0f1a]/95 backdrop-blur-xl flex items-center justify-center px-4 py-8 overflow-y-auto"
           >
             <motion.div 
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="max-w-md w-full bg-[#13162a] border border-white/10 rounded-3xl p-8 text-center"
+              className="max-w-md w-full bg-[#13162a] border border-white/10 rounded-[2rem] p-5 sm:p-8 text-center my-auto"
             >
-              <div className="text-[10px] uppercase tracking-widest text-[#c9a84c] font-semibold mb-4">{t('loss.step2')}</div>
-              <div className="w-20 h-20 bg-[#c9a84c]/10 text-[#c9a84c] rounded-full flex items-center justify-center mx-auto mb-6">
-                <DollarSign size={40} />
+              <div className="text-[10px] uppercase tracking-widest text-[#c9a84c] font-semibold mb-3">{t('loss.step2')}</div>
+              <div className="w-14 h-14 sm:w-20 sm:h-20 bg-[#c9a84c]/10 text-[#c9a84c] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <DollarSign size={28} className="sm:size-10" />
               </div>
-              <h3 className="text-2xl font-['Playfair_Display'] font-bold mb-4">{t('loss.guessQuestion')}</h3>
-              <p className="text-white/50 mb-8">
+              <h3 className="text-xl sm:text-2xl font-['Playfair_Display'] font-bold mb-3">{t('loss.guessQuestion')}</h3>
+              <p className="text-white/50 text-xs sm:text-sm mb-6 sm:mb-8 leading-relaxed px-1">
                 {t('loss.guessDesc').replace('{amount}', formatCurrency(yearlyRevenueLoss))}
               </p>
 
-              <div className="space-y-4">
+              <div className="grid gap-3">
                 <input 
                   type="number" 
                   placeholder={t('loss.guessPlaceholder')}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-center text-2xl font-bold text-white focus:border-[#c9a84c] outline-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 sm:py-4 text-center text-xl sm:text-2xl font-bold text-white focus:border-[#c9a84c] outline-none"
                   value={guess}
                   onChange={(e) => setGuess(e.target.value)}
                 />
                 <button 
                   onClick={handleGuess}
-                  className="w-full py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8c96a] text-[#0d0f1a] font-bold rounded-xl"
+                  className="w-full py-3.5 bg-gradient-to-r from-[#c9a84c] to-[#e8c96a] text-[#0d0f1a] text-sm font-black uppercase tracking-wider rounded-xl cursor-pointer hover:brightness-110 active:scale-95 transition-all shadow-md"
                 >
                   {t('loss.submit')}
                 </button>
                 <button 
                   onClick={() => setShowGame(false)}
-                  className="text-white/30 text-sm hover:text-white transition-colors"
+                  className="text-white/30 text-xs sm:text-sm hover:text-white transition-colors cursor-pointer pt-1"
                 >
                   {t('loss.maybeLater')}
                 </button>

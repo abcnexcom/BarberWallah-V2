@@ -118,34 +118,34 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="flex flex-[#10132b] flex-col sm:flex-row flex-wrap gap-4 justify-center items-center"
+          className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center items-center px-4 w-full"
         >
           <Link 
             to="/register" 
-            className="px-8 py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8c96a] text-[#0d0f1a] font-bold rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8c96a] text-[#0d0f1a] font-black rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm sm:text-base shadow-lg"
           >
-            {t('nav.register')} <ArrowRight size={20} />
+            {t('nav.register')} <ArrowRight size={18} />
           </Link>
           <Link 
             to="/login" 
-            className="px-8 py-4 bg-white/5 border border-white/10 text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-white/10 transition-colors"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-white/5 border border-white/10 text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-white/10 transition-colors text-sm sm:text-base"
           >
             {t('nav.login')}
           </Link>
           <Link 
             to="/tutorial" 
-            className="px-8 py-4 bg-white/5 border border-white/10 text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-white/10 transition-colors"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-white/5 border border-white/10 text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-white/10 transition-colors text-sm sm:text-base"
           >
             {t('nav.tutorial')}
           </Link>
           <button 
             onClick={() => setShowCalculator(true)}
-            className="relative px-8 py-4 bg-red-950/60 border border-red-500/50 text-red-100 font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-red-900/70 hover:border-red-550 transition-all cursor-pointer shadow-lg shadow-red-900/30 group"
+            className="w-full sm:w-auto relative px-6 sm:px-8 py-3.5 sm:py-4 bg-red-950/60 border border-red-500/50 text-red-100 font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-red-900/70 hover:border-red-550 transition-all cursor-pointer shadow-lg shadow-red-900/30 group text-xs sm:text-sm"
           >
             <span className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
-            <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 bg-red-500 rounded-full animate-ping" />
-            <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 bg-red-500 rounded-full border border-[#0d0f1a] shadow-sm z-10" />
-            <Calculator size={20} className="text-[#c9a84c] animate-pulse" />
+            <span className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-red-500 rounded-full animate-ping" />
+            <span className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-red-500 rounded-full border border-[#0d0f1a] shadow-sm z-10" />
+            <Calculator size={18} className="text-[#c9a84c] animate-pulse shrink-0" />
             <span className="tracking-wide">Calculate Cash Losses & Bleed rate 🚨</span>
           </button>
         </motion.div>
@@ -350,14 +350,14 @@ export default function Home() {
               </div>
 
               {/* Physical Comparison Metrics */}
-              <div className="grid grid-cols-3 gap-3 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 mb-6">
                 <div className="bg-white/[0.01] border border-white/5 p-3 rounded-2xl text-center">
                   <span className="text-[9px] block uppercase text-white/40 font-bold mb-1">Monthly Cost</span>
                   <span className="text-md font-mono font-bold text-red-400">{formatCurrency(actualLoss / 12)}</span>
                 </div>
 
                 <div className="bg-gradient-to-b from-red-500/10 to-red-500/0 border border-red-500/30 p-3 rounded-2xl text-center shadow-[inset_0_1px_10px_rgba(239,68,68,0.1)]">
-                  <span className="text-[9px] block uppercase text-red-400 font-black tracking-widest mb-1">TOTAL ANNUALLY WASTED</span>
+                  <span className="text-[9px] block uppercase text-red-500 font-black tracking-widest mb-1">TOTAL ANNUALLY WASTED</span>
                   <span className="text-xl font-mono font-black text-red-500">{formatCurrency(actualLoss)}</span>
                 </div>
 

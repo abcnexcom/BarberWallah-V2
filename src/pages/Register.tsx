@@ -301,7 +301,18 @@ export default function Register() {
       setShopId(id);
       setSuccess(true);
     } catch (err: any) {
-      setError(err.message || 'Registration failed. Please try again.');
+      let friendlyMessage = err.message || 'Registration failed. Please try again.';
+      try {
+        if (friendlyMessage.trim().startsWith('{')) {
+          const parsed = JSON.parse(friendlyMessage);
+          if (parsed && parsed.error) {
+            friendlyMessage = parsed.error;
+          }
+        }
+      } catch (parseErr) {
+        // ignore parsing error
+      }
+      setError(friendlyMessage);
     } finally {
       setLoading(false);
     }

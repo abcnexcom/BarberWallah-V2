@@ -138,7 +138,17 @@ export default function QueueStatus() {
           >
             <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-black mb-2">{t('common.yourToken')}</span>
             <span className="text-6xl font-['Playfair_Display'] font-black">#{entry.tokenNo}</span>
-            <span className="text-sm font-bold text-[#c9a84c] mt-4 uppercase tracking-widest">{entry.serviceName}</span>
+            <div className="flex flex-wrap justify-center gap-1.5 mt-4 max-w-[240px] sm:max-w-xs">
+              {entry.serviceName ? (
+                entry.serviceName.split(' + ').map((svc: string, i: number) => (
+                  <span key={i} className="text-[10px] sm:text-xs font-black text-[#c9a84c] bg-[#c9a84c]/10 border border-[#c9a84c]/20 px-2.5 py-1 rounded-md uppercase tracking-wider text-center">
+                    {svc}
+                  </span>
+                ))
+              ) : (
+                <span className="text-xs text-white/40 italic">No service selected</span>
+              )}
+            </div>
           </motion.div>
 
           <div className="flex flex-col items-center gap-3">

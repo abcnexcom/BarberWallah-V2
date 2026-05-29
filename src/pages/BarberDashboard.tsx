@@ -110,9 +110,11 @@ export default function BarberDashboard() {
     try {
       if (status === 'done') {
         const entry = originalQueue.find(e => e.id === entryId);
-        const service = services.find(s => s.id === entry?.serviceId);
-        if (entry && service && config) {
-          await queueService.markDone(shopId, entryId, service.price, config);
+        if (entry && config) {
+          const serviceIds = entry.serviceId ? entry.serviceId.split(',') : [];
+          const selectedServices = services.filter(s => serviceIds.includes(s.id));
+          const totalPrice = selectedServices.reduce((sum, s) => sum + s.price, 0);
+          await queueService.markDone(shopId, entryId, totalPrice, config);
         }
       } else if (status === 'in_service') {
         // When starting service, auto-call the person 2 spots ahead in waiting list
@@ -217,21 +219,25 @@ export default function BarberDashboard() {
     }
 
     try {
-      const service = services.find(s => s.id === walkInForm.serviceId);
-      if (!service) {
+      const selectedServiceIds = walkInForm.serviceId.split(',').filter(Boolean);
+      const selectedServices = services.filter(s => selectedServiceIds.includes(s.id));
+      if (selectedServices.length === 0) {
         setToast({ message: 'Please select a service', type: 'error' });
         setTimeout(() => setToast(null), 3000);
         return;
       }
       
+      const compositeName = selectedServices.map(s => s.name).join(' + ');
+      const totalDuration = selectedServices.reduce((sum, s) => sum + s.duration, 0) || config?.avgServiceMin || 20;
+
       const entryId = await queueService.joinQueue(shopId, {
         customerName: walkInForm.name,
         phone: walkInForm.isCashOnly ? '' : walkInForm.phone,
         serviceId: walkInForm.serviceId,
-        serviceName: service.name,
+        serviceName: compositeName,
         isCashOnly: walkInForm.isCashOnly,
         waitingInShop: walkInForm.waitingInShop,
-        estimatedWait: waiting.length * (service.duration || config?.avgServiceMin || 20)
+        estimatedWait: waiting.length * totalDuration
       });
       
       if (entryId) {
@@ -684,22 +690,31 @@ export default function BarberDashboard() {
                     <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">{t('common.service')}</label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {services.length > 0 ? (
-                        services.map(svc => (
-                          <button
-                            key={svc.id}
-                            type="button"
-                            onClick={() => setWalkInForm({...walkInForm, serviceId: svc.id})}
-                            className={cn(
-                              "p-3 rounded-xl border text-sm font-semibold transition-all flex flex-col items-center",
-                              walkInForm.serviceId === svc.id 
-                                ? "bg-[#1a1a2e] text-white border-[#1a1a2e]" 
-                                : "bg-[#f7f5f0] text-gray-600 border-[#e8e4dc] hover:border-gray-400"
-                            )}
-                          >
-                            <span>{svc.name}</span>
-                            <span className="text-[10px] opacity-60">{shop?.currency}{svc.price}</span>
-                          </button>
-                        ))
+                        services.map(svc => {
+                          const isSelected = walkInForm.serviceId.split(',').filter(Boolean).includes(svc.id);
+                          return (
+                            <button
+                              key={svc.id}
+                              type="button"
+                              onClick={() => {
+                                const ids = walkInForm.serviceId ? walkInForm.serviceId.split(',').filter(Boolean) : [];
+                                const nextIds = ids.includes(svc.id)
+                                  ? ids.filter(id => id !== svc.id)
+                                  : [...ids, svc.id];
+                                setWalkInForm({...walkInForm, serviceId: nextIds.join(',')});
+                              }}
+                              className={cn(
+                                "p-3 rounded-xl border text-sm font-semibold transition-all flex flex-col items-center cursor-pointer",
+                                isSelected 
+                                  ? "bg-[#1a1a2e] text-white border-[#1a1a2e]" 
+                                  : "bg-[#f7f5f0] text-gray-600 border-[#e8e4dc] hover:border-gray-400"
+                              )}
+                            >
+                              <span>{svc.name}</span>
+                              <span className="text-[10px] opacity-60">{shop?.currency}{svc.price}</span>
+                            </button>
+                          );
+                        })
                       ) : (
                         <div className="col-span-full py-4 text-center text-sm text-gray-400 border border-dashed border-gray-200 rounded-xl">
                           No active services found. <Link to="/barber/settings" className="text-[#c9a84c] underline">Add services</Link>

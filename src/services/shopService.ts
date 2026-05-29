@@ -151,13 +151,17 @@ export const shopService = {
 
   async saveService(shopId: string, service: Partial<Service>) {
     const id = service.id || 'SVC_' + Date.now();
-    await setDoc(doc(db, 'shops', shopId, 'services', id), {
-      ...service,
-      id,
-      shopId,
-      active: service.active ?? true,
-      sortOrder: service.sortOrder ?? 0
-    });
+    try {
+      await setDoc(doc(db, 'shops', shopId, 'services', id), {
+        ...service,
+        id,
+        shopId,
+        active: service.active ?? true,
+        sortOrder: service.sortOrder ?? 0
+      });
+    } catch (error) {
+      handleFirestoreError(error, OperationType.WRITE, `shops/${shopId}/services/${id}`);
+    }
   },
 
   async getConfig(shopId: string): Promise<ShopConfig | null> {

@@ -252,21 +252,21 @@ export default function AdminPanel() {
 
   return (
     <div className="min-h-screen bg-[#f7f5f0] text-[#0d0f1a] pb-20">
-      <header className="bg-[#0d0f1a] text-white p-6 sticky top-0 z-30 shadow-lg">
+      <header className="bg-[#0d0f1a] text-white p-4 sm:p-6 sticky top-0 z-30 shadow-lg">
         <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div>
-              <h1 className="font-['Playfair_Display'] text-2xl font-black">BarberWallah <span className="text-[#c9a84c]">Admin</span></h1>
-              <p className="text-white/40 text-[10px] uppercase tracking-widest font-bold">Master Control Panel</p>
+              <h1 className="font-['Playfair_Display'] text-xl sm:text-2xl font-black">BarberWallah <span className="text-[#c9a84c]">Admin</span></h1>
+              <p className="text-white/40 text-[8px] sm:text-[10px] uppercase tracking-widest font-bold">Master Control Panel</p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4">
               {currentUser ? (
                 <div className="flex items-center gap-3">
-                  <div className="text-right">
-                    <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+                  <div className="text-right select-none max-w-[200px] sm:max-w-none">
+                    <div className="text-[9px] sm:text-[10px] font-bold text-white/40 uppercase tracking-widest truncate">
                       {currentUser.isAnonymous ? 'Anonymous Admin' : currentUser.email}
                     </div>
-                    <button onClick={handleSignOut} className="text-[8px] text-[#c9a84c] uppercase tracking-widest font-black hover:underline">Sign Out</button>
+                    <button onClick={handleSignOut} className="text-[8px] text-[#c9a84c] uppercase tracking-widest font-black hover:underline cursor-pointer">Sign Out</button>
                   </div>
                   {currentUser.photoURL ? (
                     <img src={currentUser.photoURL} className="w-8 h-8 rounded-full border border-[#c9a84c]/20" alt="" />
@@ -277,7 +277,7 @@ export default function AdminPanel() {
                   )}
                 </div>
               ) : (
-                <button onClick={loginWithGoogle} className="p-2 bg-white/5 rounded-lg text-[#c9a84c] hover:bg-white/10 transition-colors">
+                <button onClick={loginWithGoogle} className="p-2 bg-white/5 rounded-lg text-[#c9a84c] hover:bg-white/10 transition-colors cursor-pointer">
                   <LogIn size={20} />
                 </button>
               )}
@@ -285,30 +285,30 @@ export default function AdminPanel() {
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             <div className="bg-white/5 rounded-xl p-3 border border-white/5 text-center">
               <span className="block text-[8px] uppercase tracking-widest text-white/40 mb-1">Pending</span>
-              <span className="text-xl font-bold">{stats.pending}</span>
+              <span className="text-lg sm:text-xl font-bold text-white">{stats.pending}</span>
             </div>
             <div className="bg-white/5 rounded-xl p-3 border border-white/5 text-center">
               <span className="block text-[8px] uppercase tracking-widest text-white/40 mb-1">Active</span>
-              <span className="text-xl font-bold">{stats.active}</span>
+              <span className="text-lg sm:text-xl font-bold text-white">{stats.active}</span>
             </div>
             <div className="bg-white/5 rounded-xl p-3 border border-white/5 text-center">
               <span className="block text-[8px] uppercase tracking-widest text-white/40 mb-1">Suspended</span>
-              <span className="text-xl font-bold">{stats.suspended}</span>
+              <span className="text-lg sm:text-xl font-bold text-white">{stats.suspended}</span>
             </div>
             <div className="bg-white/5 rounded-xl p-3 border border-white/5 text-center">
               <span className="block text-[8px] uppercase tracking-widest text-white/40 mb-1">MRR</span>
-              <span className="text-xl font-bold">₹{stats.mrr.toLocaleString()}</span>
+              <span className="text-lg sm:text-xl font-bold text-[#c9a84c]">₹{stats.mrr.toLocaleString()}</span>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto p-6">
+      <main className="max-w-6xl mx-auto p-4 sm:p-6">
         {(!currentUser || (currentUser.email !== 'abcnex.com@gmail.com' && currentUser.uid !== 'Q6Bw8rKstbejZXxIQf1NsOwQXZA3')) && (
-          <div className="mb-8 bg-amber-500/10 border border-amber-500/20 rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-amber-950 text-xs font-semibold">
+          <div className="mb-6 bg-amber-500/10 border border-amber-500/20 rounded-3xl p-5 sm:p-6 flex flex-col md:flex-row items-center justify-between gap-4 text-amber-950 text-xs font-semibold">
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-full bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
                 <AlertCircle size={18} />
@@ -322,21 +322,21 @@ export default function AdminPanel() {
             </div>
             <button 
               onClick={loginWithGoogle}
-              className="px-5 py-3 bg-[#0d0f1a] hover:bg-[#0d0f1a]/80 text-[#c9a84c] text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shrink-0 shadow-sm"
+              className="px-5 py-3 bg-[#0d0f1a] hover:bg-[#0d0f1a]/80 text-[#c9a84c] text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shrink-0 shadow-sm cursor-pointer"
             >
               Sign In with Google
             </button>
           </div>
         )}
 
-        <div className="flex bg-white border border-[#e8e4dc] rounded-2xl p-1 mb-8 overflow-x-auto">
+        <div className="flex bg-white border border-[#e8e4dc] rounded-2xl p-1 mb-6 overflow-x-auto scrollbar-none gap-0.5">
           {(['pending', 'active', 'all', 'referrals', 'revenue'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={cn(
-                "flex-1 min-w-[80px] py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all",
-                activeTab === tab ? "bg-[#0d0f1a] text-white shadow-lg" : "text-gray-400 hover:text-gray-600"
+                "flex-1 min-w-[85px] sm:min-w-[100px] py-2.5 sm:py-3 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all cursor-pointer",
+                activeTab === tab ? "bg-[#0d0f1a] text-white shadow-md" : "text-gray-400 hover:text-gray-600"
               )}
             >
               {tab}
@@ -345,12 +345,12 @@ export default function AdminPanel() {
         </div>
 
         {activeTab !== 'revenue' && activeTab !== 'referrals' && (
-          <div className="relative mb-8">
+          <div className="relative mb-6">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input 
               type="text" 
               placeholder="Search by shop name, ID, phone..."
-              className="w-full bg-white border border-[#e8e4dc] rounded-2xl pl-12 pr-4 py-4 outline-none focus:border-[#0d0f1a] shadow-sm"
+              className="w-full bg-white border border-[#e8e4dc] rounded-2xl pl-12 pr-4 py-4 outline-none focus:border-[#0d0f1a] shadow-sm text-sm"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
             />
@@ -537,13 +537,13 @@ function ShopCard({ shop, onApprove, onSuspend }: any) {
         </div>
       )}
 
-      <div className="flex justify-between items-start mb-6">
-        <div>
-          <h3 className="font-['Playfair_Display'] text-xl font-bold">{shop.name}</h3>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-[10px] font-mono bg-[#0d0f1a] text-white px-2 py-0.5 rounded uppercase tracking-widest">{shop.id}</span>
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
+        <div className="min-w-0 pr-2">
+          <h3 className="font-['Playfair_Display'] text-xl font-bold break-words">{shop.name}</h3>
+          <div className="flex flex-wrap items-center gap-2 mt-1.5">
+            <span className="text-[10px] font-mono bg-[#0d0f1a] text-white px-2 py-0.5 rounded uppercase tracking-widest truncate max-w-[180px] sm:max-w-none" title={shop.id}>{shop.id}</span>
             <span className={cn(
-              "text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded",
+              "text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded shrink-0",
               shop.status === 'active' ? "bg-green-100 text-green-700" :
               shop.status === 'pending' ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-700"
             )}>
@@ -551,16 +551,18 @@ function ShopCard({ shop, onApprove, onSuspend }: any) {
             </span>
           </div>
         </div>
-        <div className="text-right">
-          <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Registered</div>
-          <div className="text-xs font-bold">{new Date(shop.setupDate).toLocaleDateString()}</div>
+        <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start w-full sm:w-auto mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-0 border-dashed border-gray-200">
+          <div className="text-left sm:text-right">
+            <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Registered</div>
+            <div className="text-xs font-bold font-mono mt-0.5">{new Date(shop.setupDate).toLocaleDateString()}</div>
+          </div>
           {shop.wantsPartnership && (
-            <div className="flex flex-col items-end gap-1 mt-2">
-              <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#c9a84c]/10 text-[#c9a84c] border border-[#c9a84c]/20 rounded-full text-[8px] font-black uppercase tracking-widest">
+            <div className="flex sm:flex-col items-center sm:items-end gap-1.5 mt-0 sm:mt-2">
+              <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#c9a84c]/10 text-[#c9a84c] border border-[#c9a84c]/20 rounded-md text-[8px] font-black uppercase tracking-widest">
                 Partnership {shop.partnershipPercentage || 20}%
               </div>
               {shop.referralCodeUsed && (
-                <div className="text-[9px] font-black text-green-700 bg-green-50 px-2 py-1 rounded border border-green-100 font-mono tracking-wide">
+                <div className="text-[9px] font-black text-green-700 bg-green-50 px-2 py-0.5 rounded border border-green-100 font-mono tracking-wide">
                   CODE: {shop.referralCodeUsed}
                 </div>
               )}
@@ -568,33 +570,38 @@ function ShopCard({ shop, onApprove, onSuspend }: any) {
           )}
         </div>
       </div>
-
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="flex items-center gap-2 text-xs text-gray-600">
-          <Users size={14} className="text-gray-400" /> {shop.ownerName}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 border-b border-[#e8e4dc]/50 pb-5">
+        <div className="flex items-center gap-2.5 text-xs text-gray-700 min-w-0">
+          <Users size={15} className="text-gray-400 shrink-0" />
+          <span className="truncate" title={shop.ownerName}>{shop.ownerName}</span>
         </div>
-        <div className="flex items-center gap-2 text-xs text-gray-600">
-          <Phone size={14} className="text-gray-400" /> {shop.phone}
+        <div className="flex items-center gap-2.5 text-xs text-gray-700 min-w-0">
+          <Phone size={15} className="text-gray-400 shrink-0" />
+          <span className="truncate">{shop.phone}</span>
         </div>
-        <div className="flex items-center gap-2 text-xs text-gray-600">
-          <MapPin size={14} className="text-gray-400" /> {shop.city}, {shop.country}
+        <div className="flex items-center gap-2.5 text-xs text-gray-700 min-w-0">
+          <MapPin size={15} className="text-gray-400 shrink-0" />
+          <span className="truncate" title={`${shop.city}, ${shop.country}`}>{shop.city}, {shop.country}</span>
         </div>
-        <div className="flex items-center gap-2 text-xs text-gray-600">
-          <Calendar size={14} className="text-gray-400" /> Expires: {shop.paidUntil ? new Date(shop.paidUntil).toLocaleDateString() : '—'}
+        <div className="flex items-center gap-2.5 text-xs text-gray-700 min-w-0">
+          <Calendar size={15} className="text-[#c9a84c] shrink-0" />
+          <span className="truncate font-semibold text-[#0d0f1a]">
+            Expires: <span className="font-mono text-xs">{shop.paidUntil ? new Date(shop.paidUntil).toLocaleDateString() : '—'}</span>
+          </span>
         </div>
       </div>
 
-      <div className="space-y-4 pt-4 border-t border-[#e8e4dc]">
+      <div className="space-y-4 pt-1">
         <div className="space-y-2">
           <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Subscription Plan</label>
-          <div className="flex gap-2">
+          <div className="flex gap-1.5 sm:gap-2">
             {(['basic', 'intermediate', 'advanced'] as const).map(p => (
               <button
                 key={p}
                 disabled={shop.wantsPartnership}
                 onClick={() => setPlan(p)}
                 className={cn(
-                  "flex-1 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest border transition-all",
+                  "flex-1 py-2 rounded-lg text-[9px] sm:text-[10px] font-bold uppercase tracking-widest border transition-all cursor-pointer",
                   shop.wantsPartnership ? "bg-gray-100 text-gray-400 border-gray-100 opacity-60" :
                   plan === p ? "bg-[#0d0f1a] text-white border-[#0d0f1a]" : "bg-gray-50 text-gray-400 border-gray-200 hover:border-gray-300"
                 )}
@@ -614,7 +621,7 @@ function ShopCard({ shop, onApprove, onSuspend }: any) {
           <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Paid Until</label>
           <input 
             type="date" 
-            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs outline-none focus:border-[#0d0f1a]"
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs outline-none focus:border-[#0d0f1a]"
             value={paidUntil}
             onChange={e => setPaidUntil(e.target.value)}
           />
@@ -623,7 +630,7 @@ function ShopCard({ shop, onApprove, onSuspend }: any) {
         <div className="space-y-2">
           <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Admin Notes</label>
           <textarea 
-            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs outline-none focus:border-[#0d0f1a] resize-none"
+            className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs outline-none focus:border-[#0d0f1a] resize-none"
             rows={2}
             placeholder="Internal notes..."
             value={notes}
@@ -754,7 +761,7 @@ function ShopCard({ shop, onApprove, onSuspend }: any) {
                     type="button"
                     onClick={() => handleCompleteBilling(calculatedBill, 'Cash')}
                     disabled={isUpdating}
-                    className="py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all"
+                    className="py-2.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all cursor-pointer"
                   >
                     <CreditCard size={12} /> Cash Received
                   </button>
@@ -762,7 +769,7 @@ function ShopCard({ shop, onApprove, onSuspend }: any) {
                     type="button"
                     onClick={() => handleCompleteBilling(calculatedBill, 'Online / UPI')}
                     disabled={isUpdating}
-                    className="py-2.5 bg-[#c9a84c] hover:bg-opacity-95 text-[#0d0f1a] font-bold rounded-xl text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all"
+                    className="py-2.5 bg-[#c9a84c] hover:bg-opacity-95 text-[#0d0f1a] font-bold rounded-xl text-[10px] uppercase tracking-widest flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all cursor-pointer"
                   >
                     <CreditCard size={12} /> UPI / Online
                   </button>
@@ -772,58 +779,71 @@ function ShopCard({ shop, onApprove, onSuspend }: any) {
           )}
         </AnimatePresence>
 
-        <div className="flex gap-2 pt-2">
+        <div className="flex flex-col gap-2 pt-2 w-full">
           {shop.status !== 'active' ? (
-            <button 
-              onClick={handleApproveClick}
-              disabled={isUpdating}
-              className="flex-1 py-3 bg-green-600 text-white font-bold rounded-xl text-xs uppercase tracking-widest hover:bg-green-700 transition-colors disabled:opacity-50 shadow-md"
-            >
-              {isUpdating ? 'Working...' : 'Approve & Activate'}
-            </button>
-          ) : (
-            <>
-              {/* Highlight and load inline Billing module */}
-              <button 
-                onClick={() => setShowBilling(!showBilling)}
-                className={cn(
-                  "flex-1 py-3 font-bold rounded-xl text-xs uppercase tracking-widest transition-all gap-1.5 flex items-center justify-center border shadow-md",
-                  showBilling 
-                    ? "bg-[#c9a84c] text-white border-[#c9a84c]"
-                    : isExpired 
-                      ? "bg-red-600 hover:bg-red-700 text-white border-red-600 animate-pulse"
-                      : "bg-[#0d0f1a] hover:bg-opacity-90 text-white border-[#0d0f1a]"
-                )}
-              >
-                <Receipt size={14} />
-                {isExpired ? "BILL NOW!" : "Billing"}
-              </button>
-              
+            <div className="flex gap-2 w-full">
               <button 
                 onClick={handleApproveClick}
                 disabled={isUpdating}
-                className="py-3 px-4 bg-gray-50 hover:bg-gray-100 text-[#0d0f1a] border border-gray-200 font-bold rounded-xl text-xs uppercase tracking-widest transition-all"
-                title="Update and save notes, plans, and/or expiration dates manually"
+                className="flex-1 py-3 bg-green-600 text-white font-bold rounded-xl text-xs uppercase tracking-widest hover:bg-green-700 transition-colors disabled:opacity-50 shadow-md active:scale-95 duration-150 cursor-pointer"
               >
-                Save Info
+                {isUpdating ? 'Working...' : 'Approve & Activate'}
               </button>
-            </>
+              <a 
+                href={`https://wa.me/91${shop.phone}?text=Hello ${shop.ownerName}! This is BarberWallah regarding your salon registration.`}
+                target="_blank"
+                className="p-3 bg-green-50 text-green-600 border border-green-100 rounded-xl hover:bg-green-100 transition-colors shadow-sm shrink-0 flex items-center justify-center"
+              >
+                <MessageSquare size={18} />
+              </a>
+            </div>
+          ) : (
+            <div className="space-y-2 w-full">
+              {/* Row 1 for Active: Billing and Save Info */}
+              <div className="grid grid-cols-2 gap-2">
+                <button 
+                  onClick={() => setShowBilling(!showBilling)}
+                  className={cn(
+                    "py-3 font-bold rounded-xl text-xs uppercase tracking-widest transition-all gap-1.5 flex items-center justify-center border shadow-md active:scale-95 duration-150 cursor-pointer",
+                    showBilling 
+                      ? "bg-[#c9a84c] text-white border-[#c9a84c]"
+                      : isExpired 
+                        ? "bg-red-600 hover:bg-red-700 text-white border-red-600 animate-pulse animate-duration-1000"
+                        : "bg-[#0d0f1a] hover:bg-opacity-90 text-white border-[#0d0f1a]"
+                  )}
+                >
+                  <Receipt size={14} />
+                  {isExpired ? "BILL NOW!" : "Billing"}
+                </button>
+                
+                <button 
+                  onClick={handleApproveClick}
+                  disabled={isUpdating}
+                  className="py-3 bg-gray-50 hover:bg-gray-100 text-[#0d0f1a] border border-gray-200 font-bold rounded-xl text-xs uppercase tracking-widest transition-all active:scale-95 duration-150 cursor-pointer"
+                  title="Update and save notes, plans, and/or expiration dates manually"
+                >
+                  Save Info
+                </button>
+              </div>
+
+              {/* Row 2 for Active: Suspend and WhatsApp */}
+              <div className="grid grid-cols-[1fr_auto] gap-2">
+                <button 
+                  onClick={() => onSuspend(shop.id)}
+                  className="py-3 bg-red-50 text-red-600 border border-red-100 font-bold rounded-xl text-[10px] sm:text-xs uppercase tracking-widest hover:bg-red-100 transition-colors shadow-sm active:scale-95 duration-150 cursor-pointer"
+                >
+                  Suspend Shop
+                </button>
+                <a 
+                  href={`https://wa.me/91${shop.phone}?text=Hello ${shop.ownerName}! This is BarberWallah regarding your salon registration.`}
+                  target="_blank"
+                  className="p-3 bg-green-50 text-green-600 border border-green-100 rounded-xl hover:bg-green-100 transition-colors shadow-sm flex items-center justify-center shrink-0"
+                >
+                  <MessageSquare size={18} />
+                </a>
+              </div>
+            </div>
           )}
-          {shop.status === 'active' && (
-            <button 
-              onClick={() => onSuspend(shop.id)}
-              className="px-4 py-3 bg-red-50 text-red-600 border border-red-100 font-bold rounded-xl text-xs uppercase tracking-widest hover:bg-red-100 transition-colors shadow-sm"
-            >
-              Suspend
-            </button>
-          )}
-          <a 
-            href={`https://wa.me/91${shop.phone}?text=Hello ${shop.ownerName}! This is BarberWallah regarding your salon registration.`}
-            target="_blank"
-            className="p-3 bg-green-50 text-green-600 border border-green-100 rounded-xl hover:bg-green-100 transition-colors shadow-sm"
-          >
-            <MessageSquare size={18} />
-          </a>
         </div>
       </div>
     </motion.div>

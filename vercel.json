@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "/api"
+    },
+    {
       "source": "/((?!assets/|api/|favicon.ico|firebase-applet-config.json).*)*",
       "destination": "/index.html"
     }

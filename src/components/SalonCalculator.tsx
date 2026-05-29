@@ -33,18 +33,18 @@ export default function SalonCalculator({ shop }: SalonCalculatorProps) {
   const profit: number = revenue - totalExpenses;
 
   return (
-    <div className="bg-white border border-[#e8e4dc] rounded-[2rem] p-8 shadow-sm">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 bg-[#1a1a2e] text-white rounded-2xl flex items-center justify-center">
-          <Calculator size={24} />
+    <div className="bg-white border border-[#e8e4dc] rounded-[2rem] p-5 sm:p-8 shadow-sm">
+      <div className="flex items-center gap-3 mb-6 sm:mb-8">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#1a1a2e] text-white rounded-2xl flex items-center justify-center shrink-0">
+          <Calculator size={20} className="sm:size-6" />
         </div>
         <div>
-          <h2 className="font-['Playfair_Display'] text-2xl font-black">{t('calc.title')}</h2>
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Monthly Overview</p>
+          <h2 className="font-['Playfair_Display'] text-xl sm:text-2xl font-black">{t('calc.title')}</h2>
+          <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-400">Monthly Overview</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
         <div className="space-y-6">
           <div className="space-y-1.5">
             <label className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">{t('calc.revenue')}</label>
@@ -82,10 +82,10 @@ export default function SalonCalculator({ shop }: SalonCalculatorProps) {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="bg-[#f7f5f0] rounded-2xl p-6 border border-[#e8e4dc]">
+          <div className="bg-[#f7f5f0] rounded-2xl p-4 sm:p-6 border border-[#e8e4dc]">
             <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold block mb-2">{t('calc.profit')}</span>
             <div className={cn(
-              "text-4xl font-['Playfair_Display'] font-black",
+              "text-2xl sm:text-3xl lg:text-4xl font-['Playfair_Display'] font-black break-all font-mono",
               profit >= 0 ? "text-green-600" : "text-red-600"
             )}>
               {currency}{profit.toLocaleString()}
@@ -103,21 +103,24 @@ export default function SalonCalculator({ shop }: SalonCalculatorProps) {
             </div>
           </div>
 
-          <div className="bg-[#1a1a2e] text-white rounded-2xl p-6 shadow-xl">
+          <div className="bg-[#1a1a2e] text-white rounded-2xl p-4 sm:p-6 shadow-xl">
             <h3 className="text-sm font-bold mb-4 uppercase tracking-widest text-white/40">Summary</h3>
             <div className="space-y-3">
-              <div className="flex justify-between text-sm">
-                <span className="text-white/60">Revenue</span>
-                <span className="font-bold">{currency}{revenue.toLocaleString()}</span>
+              <div className="flex justify-between items-center gap-2 text-sm">
+                <span className="text-white/60 shrink-0">Revenue</span>
+                <span className="font-bold font-mono break-all text-right">{currency}{revenue.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-white/60">Expenses</span>
-                <span className="font-bold">{currency}{totalExpenses.toLocaleString()}</span>
+              <div className="flex justify-between items-center gap-2 text-sm">
+                <span className="text-white/60 shrink-0">Expenses</span>
+                <span className="font-bold font-mono break-all text-right">{currency}{totalExpenses.toLocaleString()}</span>
               </div>
               <div className="h-px bg-white/10 w-full my-2"></div>
-              <div className="flex justify-between text-lg font-bold">
-                <span>Net</span>
-                <span className={profit >= 0 ? "text-[#c9a84c]" : "text-red-400"}>{currency}{profit.toLocaleString()}</span>
+              <div className="flex justify-between items-center gap-2 text-base sm:text-lg font-bold">
+                <span className="shrink-0">Net</span>
+                <span className={cn(
+                  "font-black font-mono break-all text-right",
+                  profit >= 0 ? "text-[#c9a84c]" : "text-red-400"
+                )}>{currency}{profit.toLocaleString()}</span>
               </div>
             </div>
           </div>
